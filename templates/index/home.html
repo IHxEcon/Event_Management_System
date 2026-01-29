@@ -1,0 +1,614 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIU Event Managment</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!--custom css file-->
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <a href="#" class="logo"><span>DIU_</span>Event organizers</a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#service">service</a>
+            <a href="#about">about</a>
+            <a href="#gallery">gallery</a>
+            <a href="#price">price</a>
+            <a href="#review">review</a>
+            <a href="#contact">contact</a>
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}">admin</a>
+                
+                {% else %}
+                <a href="{% url 'profile' %}">dashboard</a>
+                {% endif %}
+                <a href="#" onclick="document.getElementById('logout-form').submit();">logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">login</a>
+            {% endif %}
+        </nav>
+
+        <!-- <div id="menu-bers" class="fas fa-bars"></div> -->
+        <div id="menu-bars" class="fas fa-bars"></div>
+
+    </header>
+    <!--header section end-->
+    {% if messages %}
+        <div class="django-messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <!--home section start-->
+    <section class="home" id="home">
+
+        <div class="content">
+            <h3>its time to celebrate! the best <samp>event organizers</samp></h3>
+
+
+        </div>
+
+        <div class="swiper home-slider">
+            <h1><span>Our </span>Recent Works</h1>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img
+                        src="{% static 'img/1.jpeg' %}"
+                        alt=""></div>
+                <div class="swiper-slide"><img
+                        src="{% static 'img/2.jpeg' %}"
+                        alt=""></div>
+                <div class="swiper-slide"><img
+                        src="{% static 'img/3.jpeg' %}"
+                        alt=""></div>
+                <div class="swiper-slide"><img
+                        src="{% static 'img/5.jpeg' %}"
+                        alt=""></div>
+                <div class="swiper-slide"><img
+                        src="{% static 'img/4.jpeg' %}"
+                        alt=""></div>
+                <div class="swiper-slide"><img
+                        src="{% static 'img/6.jpeg' %}"
+                        alt=""></div>
+            </div>
+        </div>
+
+
+
+    </section>
+
+    <!--service section-->
+    <section class="service" id="service">
+
+        <h1 class="heading"> our <span>services</span></h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>venue selection</h3>
+                    <p>🌟 Create Unforgettable Memories with DIU Event Organizers! 
+
+                        Discover the perfect backdrop for your event with our curated selection of stunning venues. From intimate gatherings to grand celebrations, we have the perfect space for you.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-envelope"></i>
+                    <h3>invitation card</h3>
+                    <p>
+                        💌 Make Every Invite Memorable with DIU Event Organizers! 
+
+                        Professional invitation card design with customized layouts, high-quality printing, and complete RSVP management for your special events.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-snowman"></i>
+                    <h3>entertainment</h3>
+                    <p>🌟 Transform Your Event with DIU Event Organizers! 
+
+                        Expert decorators creating breathtaking atmospheres for any occasion. From weddings to corporate events, we bring your vision to life.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-utensils"></i>
+                    <h3>food and drinks</h3>
+                    <p>🍽️ Satisfy Every Taste with DIU Event Organizers! 
+
+                        Exceptional catering services with delicious and nutritious options for every dietary preference. From casual to formal dining experiences.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-photo-video"></i>
+                    <h3>photos and videos</h3>
+                    <p>
+                        📸 Capture Every Moment with DIU Event Organizers! 
+
+                        Professional photography and videography services to preserve your special moments with precision and artistry for lasting memories.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+            <div class="box">
+                <div class="box-content">
+                    <i class="fas fa-music"></i>
+                    <h3>Cultural Clubs</h3>
+                    <p>🎭 Celebrate Diversity with DIU Event Organizers! 
+
+                        Join our cultural club for vibrant festivals, workshops, and events that foster understanding and unity among diverse communities.
+                    </p>
+                </div>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!--service section ends-->
+
+    <!--about section ends-->
+    <section class="about" id="about">
+
+        <h1 class="heading"><span>about</span> us </h1>
+
+        <div class="row">
+
+            <div class="image">
+                <img src="https://www.amadeus-hospitality.com/wp-content/uploads/2022/05/Return-of-Group-Travel_Meeting-Planners.jpg"
+                    alt="">
+
+            </div>
+
+
+
+            <div class="content">
+                <h3>we will give a very special celebration for you</h3>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Nam beatae corporis similique, nulla animi ab, facilis accusantium
+                    voluptates totam, culpa itaque. Laudantium vero delectus veniam magnam inventore dolores, enim
+                    dolore?</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Similique aliquam aliquid porro asperiores eum consequatur temporibus fugit iusto, suscipit
+                    quibusdam debitis at explicabo, omnis voluptatum? Saepe quod quas aut ratione.</p>
+                <a href="#contact" class="bnt">contact us</a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!--about section ends-->
+    <!-- 24.35 -->
+    <!--gallery section start-->
+
+    <section class="gallery" id="gallery">
+
+        <h1 class="heading">our<span> gallery </span></h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/close-up-recording-video-with-smartphone-concert-toned-picture_1153-6815.jpg?t=st=1714938840~exp=1714942440~hmac=fffd904a0c4589a9287381d1b34ff756fd0cee692c0f87e513c086bd0d9c223e&w=740"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/new-year-celebration-concept-with-five-young-friends_23-2147720420.jpg?t=st=1714938976~exp=1714942576~hmac=5da22803ae66c4341b2b7f55f70bccdcf9e8dd0a7a0f3fb8f5bcb53da0ffbd13&w=996"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/people-with-gothic-style-costumes-make-up-performing-drama-world-theatre-day_23-2151182206.jpg?t=st=1714939034~exp=1714942634~hmac=bda0b7dcbc8da63d374ebafd7202007640d1f817cf9f70c4839ab8dd7c788d99&w=826"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/sound-wave-technology-cheering-crowd-concert-remixed-media_53876-108553.jpg?t=st=1714939091~exp=1714942691~hmac=911470caf8ea3bb92b26f5cd05fe83a9839cf3a78ead0a57c1d3cfb681201ed0&w=996"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/young-kids-performing-play-theatre-stage-celebrate-world-theatre-day_23-2151163655.jpg?t=st=1714939141~exp=1714942741~hmac=8e3707ec2b8fac09cc21df9897bf09f7139584002002fa9643d9c709287c2c80&w=826"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/celebration-hall-with-full-guests_8353-10399.jpg?t=st=1714939217~exp=1714942817~hmac=97c7664b49968e9b5ad939e9ee173524a3f94c45f195eed8910cf25c329ea192&w=996"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="https://img.freepik.com/free-photo/people-concert-with-smoke-overlay-texture_53876-126856.jpg?t=st=1714939246~exp=1714942846~hmac=560beb1272d45e82e63b9f82323fd795dc52bdaa19e6744e42809e8220c5900a&w=996"
+                    alt="">
+                <h3 class="title">photos and events</h3>
+                <div class="icons">
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-share"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </section>
+
+    <!--gallery section end-->
+
+    <!--price section start-->
+    <section class="price" id="price">
+
+
+        <h1 class="heading"> our <samp>price</samp></h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3 class="title">for birthdays</h3>
+                <h3 class="amount">৳৯৯৯৯.৯৯</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i>full services</li>
+                    <li><i class="fas fa-check"></i>decoration</li>
+                    <li><i class="fas fa-check"></i>music and photos</li>
+                    <li><i class="fas fa-check"></i>food and drinks</li>
+                    <li><i class="fas fa-check"></i>invition card</li>
+
+                </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'event_booking' 1 %}" class="bnt">Book Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bnt">Login to Book</a>
+                {% endif %}
+            </div>
+
+
+            <div class="box">
+                <h3 class="title">for weddings</h3>
+                <h3 class="amount">৳৯৯৯৯৯.৯৯</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i>full services</li>
+                    <li><i class="fas fa-check"></i>decoration</li>
+                    <li><i class="fas fa-check"></i>music and photos</li>
+                    <li><i class="fas fa-check"></i>food and drinks</li>
+                    <li><i class="fas fa-check"></i>invition card</li>
+
+                </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'event_booking' 2 %}" class="bnt">Book Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bnt">Login to Book</a>
+                {% endif %}
+            </div>
+
+            <div class="box">
+                <h3 class="title">for concerts</h3>
+                <h3 class="amount">৳৪৯৯৯৯.৯৯</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i>full services</li>
+                    <li><i class="fas fa-check"></i>decoration</li>
+                    <li><i class="fas fa-check"></i>music and photos</li>
+                    <li><i class="fas fa-check"></i>food and drinks</li>
+                    <li><i class="fas fa-check"></i>invition card</li>
+
+                </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'event_booking' 3 %}" class="bnt">Book Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bnt">Login to Book</a>
+                {% endif %}
+            </div>
+
+
+            <div class="box">
+                <h3 class="title">for conference</h3>
+                <h3 class="amount">৳৪৯৯৯৯.৯৯</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i>full services</li>
+                    <li><i class="fas fa-check"></i>decoration</li>
+                    <li><i class="fas fa-check"></i>music and photos</li>
+                    <li><i class="fas fa-check"></i>food and drinks</li>
+                    <li><i class="fas fa-check"></i>invition card</li>
+
+                </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'event_booking' 4 %}" class="bnt">Book Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bnt">Login to Book</a>
+                {% endif %}
+            </div>
+
+
+        </div>
+
+
+
+    </section>
+    <!--prince section end-->
+
+    <!--review section start-->
+    <section class="review" id="review">
+
+        <h1 class="heading">client's <span>review</span></h1>
+
+        <div class="review-slider swiper-container">
+
+            <div class="swiper-wrapper">
+
+                {% for review in reviews %}
+                <div class="swiper-slide box">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="https://img.freepik.com/premium-photo/man-face-avatar-portrait-confident-expression-icon_279525-26561.jpg"
+                            alt="">
+                        <div class="user-info">
+                            <h3>{{ review.user.first_name }} {{ review.user.last_name }}</h3>
+                            <span>
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <i class="fas fa-star" style="color: var(--main-color);"></i>
+                                    {% else %}
+                                        <i class="far fa-star" style="color: #666;"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                - {{ review.event_booking.event_name }}
+                            </span>
+                        </div>
+                    </div>
+                    <p>{{ review.comment }}</p>
+                </div>
+                {% empty %}
+                <!-- Default reviews if no reviews exist -->
+                <div class="swiper-slide box">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="https://img.freepik.com/premium-photo/man-face-avatar-portrait-confident-expression-icon_279525-26561.jpg"
+                            alt="">
+                        <div class="user-info">
+                            <h3>Sample User</h3>
+                            <span>happy clients</span>
+                        </div>
+                    </div>
+                    <p>Be the first to review our services! Book an event and share your experience with others.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!--review section end-->
+
+
+
+    <!--contact section starts-->
+
+    <section class="contact" id="contact">
+
+        <h1 class="heading"><span>contact</span> us </h1>
+
+        <form action="{% url 'home' %}" method="POST">
+            {% csrf_token %}
+            <div class="inputBox">
+                <input type="text" placeholder="Event Name" name="event_name">
+                <input type="date" placeholder="Date" name='event_date'>
+            </div>
+
+            <div class="inputBox">
+                <input type="text" placeholder="Event Location" name="event_location">
+                <input type="time" placeholder="Event Time" name="event_time">
+            </div>
+            <textarea name="event_description" placeholder="Event Details" id="" cols="30" rows="10"></textarea>
+            <input type="submit" value="Send Event Request" class="bnt">
+
+        </form>
+
+
+
+
+
+    </section>
+
+    <section class="footer">
+
+        <div class="box-container">
+
+
+            <div class="box">
+
+                <h3>Venues</h3>
+
+                <a href="#"><i class="fa-solid fa-map-location"></i>Bonomaya</a>
+                <a href="#"><i class="fa-solid fa-map-location"></i>YKSG-2</a>
+                <a href="#"><i class="fa-solid fa-map-location"></i>Center Field</a>
+                <a href="#"><i class="fa-solid fa-map-location"></i>Green Garden</a>
+                <a href="#"><i class="fa-solid fa-map-location"></i></i>DIU Lake</a>
+
+            </div>
+
+
+
+            <div class="box">
+
+                <h3>Suppliers</h3>
+
+
+
+                <a href="#"> <i class="fa-solid fa-camera"></i>Photographers</a>
+                <a href="#"> <i class="fa-solid fa-snowman"></i>Decorators</a>
+                <a href="#"> <i class="fa-solid fa-person"></i>Venues Planner</a>
+                <a href="#"> <i class="fa-solid fa-music"></i>Choreographers</a>
+                <a href="#"> <i class="fa-solid fa-person-dress"></i>Makeup Artist</a>
+
+
+            </div>
+
+
+            <div class="box">
+
+                <h3>Quick Links</h3>
+
+
+                <a href="#"> <i class="fa-solid fa-house-chimney"></i> home </a>
+                <a href="#"> <i class="fa-solid fa-bell-concierge"></i> service </a>
+                <a href="#"> <i class="fa-solid fa-address-card"></i> about </a>
+                <a href="#"> <i class="fa-brands fa-envira"></i> gallery </a>
+                <a href="#"> <i class="fa-solid fa-tags"></i> price </a>
+                <a href="#"> <i class="fa-solid fa-star"></i> review </a>
+
+
+            </div>
+
+            <div class="box">
+
+                <h3>contact info</h3>
+
+
+                <a href="#"> <i class="fas fa-phone"></i> +8801645680280 </a>
+                <a href="#"> <i class="fas fa-phone"></i> +8801798153056 </a>
+                <a href="#"> <i class="fas fa-envelope"></i> mehdedihasanpolashat@gmail.com </a>
+                <a href="#"> <i class="fas fa-envelope"></i> imzatj@gmail.com </a>
+                <a href="#"> <i class="fa-solid fa-location-dot"></i> DIU, Bangladesh - 1350 </a>
+
+
+            </div>
+
+            <div class="box">
+
+                <h3>follow us</h3>
+
+
+                <a href="#"> <i class="fa-brands fa-facebook"></i> facebook </a>
+                <a href="#"> <i class="fa-brands fa-square-x-twitter"></i>twitter </a>
+                <a href="#"> <i class="fa-brands fa-square-instagram"></i> instagram </a>
+                <a href="#"> <i class="fa-brands fa-linkedin"></i> linkedin </a>
+
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+        <div class="credit"> created by <span>DIU_Event Organizers</span> | all right reserved </div>
+
+    </section>
+
+
+    <!--footer section end-->
+
+    <!--theme start-->
+    <div class="theme-toggler">
+
+        <div class="toggle-btn">
+
+            <i class="fas fa-cog"></i>
+
+        </div>
+
+        <h3>choose color</h3>
+
+        <div class="buttons">
+            <div class="theme-btn" style="background-color: #3867d6;"></div>
+            <div class="theme-btn" style="background-color: #f7b731;"></div>
+            <div class="theme-btn" style="background-color: #ff0033;"></div>
+            <div class="theme-btn" style="background-color: #20bf6b;"></div>
+            <div class="theme-btn" style="background-color: #fa8231;"></div>
+            <div class="theme-btn" style="background-color: #FC427B;"></div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--custom js file-->
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <!-- Hidden logout form -->
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+
+</body>
+
+</html>

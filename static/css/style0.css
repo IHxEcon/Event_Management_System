@@ -1,0 +1,143 @@
+/* Set background image */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://business.getonbloc.com/wp-content/uploads/2022/10/the-event-sector-what-you-need-to-understand-about-the-events-industry.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+}
+
+.bcrnd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Overlay for better readability */
+}
+
+.whtbc {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.title span {
+    color: #007bff;
+}
+
+.inputs input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.loginbt {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.loginbt:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: left;
+}
+
+ul li {
+    font-size: 14px;
+}
+
+ul li a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+.register {
+    font-size: 14px;
+}
+
+.register a {
+    color: #bb0606;
+    text-decoration: none;
+}
+
+
+
+/* Align 'Show Password' to the left */
+.form-group-inline {
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Elegant styling for 'Show Password' text */
+.form-group-inline label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.form-group-inline input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.form-group-inline label:hover {
+    color: #072749;
+    
+}
+/* Styling for the register button */
+.registerbt {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    padding: 15px 32px; /* Add padding around the text */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make it behave like an inline element */
+    font-size: 16px; /* Set font size */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect */
+.registerbt:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Focus effect for accessibility */
+.registerbt:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.6); /* Greenish focus border */
+}

@@ -1,0 +1,364 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DIU Event Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin-dashboard.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo"><span>DIU_</span>Event organizers</a>
+        <nav class="navbar">
+            <a href="{% url 'home' %}">home</a>
+            <a href="{% url 'admin_dashboard' %}" class="active">admin dashboard</a>
+            <a href="#" onclick="document.getElementById('logout-form').submit();">logout</a>
+        </nav>
+        <div id="menu-bars" class="fas fa-bars"></div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Dashboard Header -->
+        <div class="admin-header">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h1>Admin Dashboard</h1>
+            <p>Manage event bookings and user requests</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ total_bookings }}</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ pending_bookings }}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ approved_bookings }}</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ rejected_bookings }}</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="section">
+            <div class="section-header">
+                <i class="fas fa-filter"></i> Filters & Search
+                <div class="header-actions">
+                    {% if status_filter != 'all' or search_query %}
+                        <a href="{% url 'admin_dashboard' %}" class="clear-all-btn">
+                            <i class="fas fa-refresh"></i> Clear All
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="filter-container">
+                    <form method="GET" class="filter-form">
+                        <div class="filter-row">
+                            <div class="filter-group status-filter">
+                                <label for="status">
+                                    <i class="fas fa-tags"></i> Filter by Status
+                                </label>
+                                <div class="select-wrapper">
+                                    <select name="status" id="status" onchange="this.form.submit()">
+                                        <option value="all" {% if status_filter == 'all' %}selected{% endif %}>
+                                            <i class="fas fa-list"></i> All Statuses
+                                        </option>
+                                        {% for value, label in status_choices %}
+                                            <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <i class="fas fa-chevron-down select-arrow"></i>
+                                </div>
+                                {% if status_filter != 'all' %}
+                                    <span class="active-filter">
+                                        <i class="fas fa-filter"></i> {{ status_filter|title }}
+                                        <a href="?search={{ search_query }}" class="remove-filter">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="filter-group search-filter">
+                                <label for="search">
+                                    <i class="fas fa-search"></i> Search Bookings
+                                </label>
+                                <div class="search-wrapper">
+                                    <input type="text" name="search" id="search" value="{{ search_query }}" 
+                                           placeholder="Search by name, email, event name, or location..." 
+                                           class="search-input">
+                                    <button type="submit" class="btn btn-search">
+                                        <i class="fas fa-search"></i>
+                                        <span class="btn-text">Search</span>
+                                    </button>
+                                </div>
+                                {% if search_query %}
+                                    <span class="active-filter">
+                                        <i class="fas fa-search"></i> "{{ search_query }}"
+                                        <a href="?status={{ status_filter }}" class="remove-filter">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Filter Buttons -->
+                        <div class="quick-filters">
+                            <span class="quick-filter-label">Quick Filters:</span>
+                            <a href="?status=pending" class="quick-filter-btn {% if status_filter == 'pending' %}active{% endif %}">
+                                <i class="fas fa-clock"></i> Pending ({{ pending_bookings }})
+                            </a>
+                            <a href="?status=approved" class="quick-filter-btn {% if status_filter == 'approved' %}active{% endif %}">
+                                <i class="fas fa-check"></i> Approved ({{ approved_bookings }})
+                            </a>
+                            <a href="?status=rejected" class="quick-filter-btn {% if status_filter == 'rejected' %}active{% endif %}">
+                                <i class="fas fa-times"></i> Rejected ({{ rejected_bookings }})
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Bookings Section -->
+        <div class="section">
+            <div class="section-header">
+                <i class="fas fa-list"></i> Event Bookings
+                {% if status_filter != 'all' or search_query %}
+                    <span class="filter-indicator">
+                        (Filtered Results)
+                        <a href="{% url 'admin_dashboard' %}" class="clear-filters">
+                            <i class="fas fa-times"></i> Clear Filters
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="section-content">
+                {% if bookings %}
+                    <div class="bookings-table-container">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Event</th>
+                                    <th>Date & Time</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                    <tr class="booking-row status-{{ booking.status }}">
+                                        <td class="user-info">
+                                            <div class="user-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="user-details">
+                                                <div class="user-name">{{ booking.user.first_name }} {{ booking.user.last_name }}</div>
+                                                <div class="user-email">{{ booking.user.email }}</div>
+                                                {% if booking.user.phone_number %}
+                                                    <div class="user-phone">{{ booking.user.phone_number }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td class="event-info">
+                                            <div class="event-name">{{ booking.event_name|title }}</div>
+                                            <div class="event-description">{{ booking.event_description|truncatechars:50 }}</div>
+                                        </td>
+                                        <td class="datetime-info">
+                                            <div class="event-date">
+                                                <i class="fas fa-calendar"></i> {{ booking.event_date }}
+                                            </div>
+                                            <div class="event-time">
+                                                <i class="fas fa-clock"></i> {{ booking.event_time }}
+                                            </div>
+                                        </td>
+                                        <td class="location-info">
+                                            <i class="fas fa-map-marker-alt"></i> {{ booking.event_location }}
+                                        </td>
+                                        <td class="status-info">
+                                            <span class="status-badge status-{{ booking.status }}">
+                                                {% if booking.status == 'pending' %}
+                                                    <i class="fas fa-clock"></i>
+                                                {% elif booking.status == 'approved' %}
+                                                    <i class="fas fa-check"></i>
+                                                {% else %}
+                                                    <i class="fas fa-times"></i>
+                                                {% endif %}
+                                                {{ booking.get_status_display }}
+                                            </span>
+                                            {% if booking.approved_by %}
+                                                <div class="approved-by">
+                                                    by {{ booking.approved_by.first_name }} {{ booking.approved_by.last_name }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="created-info">
+                                            <div class="created-date">{{ booking.created_at|date:"M d, Y" }}</div>
+                                            <div class="created-time">{{ booking.created_at|time:"H:i" }}</div>
+                                        </td>
+                                        <td class="actions-info">
+                                            {% if booking.status == 'pending' %}
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-approve" onclick="updateStatus({{ booking.id }}, 'approve')">
+                                                        <i class="fas fa-check"></i> Approve
+                                                    </button>
+                                                    <button class="btn btn-reject" onclick="updateStatus({{ booking.id }}, 'reject')">
+                                                        <i class="fas fa-times"></i> Reject
+                                                    </button>
+                                                </div>
+                                            {% else %}
+                                                <div class="action-completed">
+                                                    <i class="fas fa-check-circle"></i> {{ booking.get_status_display }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="no-bookings">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Event Bookings Found</h3>
+                        {% if status_filter != 'all' or search_query %}
+                            <p>No bookings match your current filters. <a href="{% url 'admin_dashboard' %}">Clear filters</a> to see all bookings.</p>
+                        {% else %}
+                            <p>No event bookings have been submitted yet.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Confirmation Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close" onclick="closeActionModal()">&times;</span>
+            <h2 id="actionTitle"><i class="fas fa-question-circle"></i> Confirm Action</h2>
+            <p id="actionMessage">Are you sure you want to perform this action?</p>
+            <form id="actionForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" id="action_type">
+                <input type="hidden" name="booking_id" id="action_booking_id">
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn" id="confirmBtn">
+                        <i class="fas fa-check"></i> Confirm
+                    </button>
+                    <button type="button" class="btn" onclick="closeActionModal()" style="background: #6c757d; color: white; margin-left: 10px;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden logout form -->
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+
+    <script>
+        function updateStatus(bookingId, action) {
+            const actionTitle = document.getElementById('actionTitle');
+            const actionMessage = document.getElementById('actionMessage');
+            const confirmBtn = document.getElementById('confirmBtn');
+            
+            if (action === 'approve') {
+                actionTitle.innerHTML = '<i class="fas fa-check-circle" style="color: #28a745;"></i> Approve Booking';
+                actionMessage.textContent = 'Are you sure you want to approve this event booking?';
+                confirmBtn.className = 'btn btn-approve';
+                confirmBtn.innerHTML = '<i class="fas fa-check"></i> Approve';
+            } else {
+                actionTitle.innerHTML = '<i class="fas fa-times-circle" style="color: #dc3545;"></i> Reject Booking';
+                actionMessage.textContent = 'Are you sure you want to reject this event booking?';
+                confirmBtn.className = 'btn btn-reject';
+                confirmBtn.innerHTML = '<i class="fas fa-times"></i> Reject';
+            }
+            
+            document.getElementById('action_type').value = action;
+            document.getElementById('action_booking_id').value = bookingId;
+            document.getElementById('actionModal').style.display = 'block';
+        }
+
+        function closeActionModal() {
+            document.getElementById('actionModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('actionModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Auto-hide messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+    </script>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

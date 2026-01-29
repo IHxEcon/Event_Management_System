@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style0.css' %}">
+    <title>DIU Event Organizer - Register</title>
+</head>
+<body>
+    <div class="bcrnd">
+        <div class="whtbc">
+            <div class="title">
+                <p><span>DIU_</span>Event Organizer</p>
+            </div>
+
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                
+                <div class="rinput">
+                    <div class="inputs">
+                        <!-- First Name -->
+                        <input type="text" name="first_name" placeholder="First name" required><br>
+                        <!-- Last Name -->
+                        <input type="text" name="last_name" placeholder="Last name" required><br>
+                        <!-- Email -->
+                        <input type="email" name="email" placeholder="Email" required><br>
+                        <!-- Phone Number -->
+                        <input type="text" name="phone_number" placeholder="Phone Number" required><br>
+                        <!-- Password -->
+                        <input type="password" name="password" placeholder="Password" id="password" required><br>
+                    </div>
+                </div>
+
+
+
+                <p id="para"></p>
+                <div class="form-group-inline">
+                <label
+                ><input type="checkbox" id="show-password" name="show-password" onclick="showPass()"/>
+                Show Password</label
+                >
+                <br>
+            </div>
+                <button class="registerbt" type="submit">Register</button>
+            </form>
+
+            <p class="register">
+                Already have an account?
+                <a href="{% url 'login' %}">Login</a>
+            </p>
+        </div>
+    </div>
+</body>
+    <script src="{% static 'js/user_login_signup.js' %} "></script>
+</html>

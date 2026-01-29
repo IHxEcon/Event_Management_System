@@ -1,0 +1,333 @@
+{% load static %}
+{% load dashboard_extras %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - DIU Event Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo"><span>DIU_</span>Event organizers</a>
+        <nav class="navbar">
+            <a href="{% url 'home' %}">home</a>
+            <a href="{% url 'profile' %}" class="active">dashboard</a>
+            <a href="#" onclick="document.getElementById('logout-form').submit();">logout</a>
+        </nav>
+        <div id="menu-bars" class="fas fa-bars"></div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1>Welcome back, {{ user.first_name|default:user.email|lower }}!</h1>
+            <p>Manage your profile and track your event bookings</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_bookings }}</div>
+                <div class="stat-label">Total Event Bookings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ user.date_joined|date:"Y" }}</div>
+                <div class="stat-label">Member Since</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {% if user.first_name and user.last_name %}100{% else %}75{% endif %}%
+                </div>
+                <div class="stat-label">Profile Complete</div>
+            </div>
+        </div>
+
+        <!-- Event Bookings Section -->
+        <div class="section">
+            <div class="section-header">
+                <i class="fas fa-calendar-alt"></i> Your Event Bookings
+            </div>
+            <div class="section-content">
+                {% if bookings %}
+                    <div class="events-grid">
+                        {% for booking in bookings %}
+                            <div class="event-card">
+                                <div class="event-header">
+                                    <div class="event-title">
+                                        <i class="fas fa-star"></i> {{ booking.event_name }}
+                                        <span class="status-badge status-{{ booking.status }}">
+                                            {% if booking.status == 'pending' %}
+                                                <i class="fas fa-clock"></i> Pending
+                                            {% elif booking.status == 'approved' %}
+                                                <i class="fas fa-check"></i> Approved
+                                            {% else %}
+                                                <i class="fas fa-times"></i> Rejected
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="event-actions">
+                                        {% if booking.status == 'pending' %}
+                                            <button class="btn btn-edit" onclick="editEvent({{ booking.id }})">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        {% endif %}
+                                        <button class="btn btn-delete" onclick="deleteEvent({{ booking.id }})">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="event-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>{{ booking.event_date }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ booking.event_time }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>{{ booking.event_location }}</span>
+                                    </div>
+                                </div>
+                                
+                                {% if booking.event_description %}
+                                    <div class="event-description">
+                                        <strong>Description:</strong> {{ booking.event_description }}
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Review Section -->
+                                {% if booking.status == 'approved' %}
+                                    {% if booking.id in user_reviews %}
+                                        <div class="review-display">
+                                            <h4><i class="fas fa-star"></i> Your Review:</h4>
+                                            <div class="rating-display">
+                                                {% with user_reviews|get_item:booking.id as review %}
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= review.rating %}
+                                                            <i class="fas fa-star" style="color: #FFD700;"></i>
+                                                        {% else %}
+                                                            <i class="far fa-star" style="color: #666;"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <span>{{ review.rating }}/5</span>
+                                                {% endwith %}
+                                            </div>
+                                            {% with user_reviews|get_item:booking.id as review %}
+                                                <p>{{ review.comment }}</p>
+                                            {% endwith %}
+                                        </div>
+                                    {% else %}
+                                        <div class="review-form">
+                                            <h4><i class="fas fa-comment"></i> Add Review:</h4>
+                                            <button class="btn btn-review" onclick="showReviewForm({{ booking.id }})">
+                                                <i class="fas fa-star"></i> Write Review
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-events">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Event Bookings Yet</h3>
+                        <p>You haven't booked any events yet. Visit our <a href="{% url 'home' %}">home page</a> to book your first event!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Profile Information Section -->
+        <div class="section">
+            <div class="section-header">
+                <i class="fas fa-user-cog"></i> Profile Information
+            </div>
+            <div class="section-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_profile">
+                    
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" placeholder="Enter your first name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" placeholder="Enter your last name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number:</label>
+                        <input type="tel" id="phone_number" name="phone_number" value="{{ user.phone_number }}" placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email (Cannot be changed):</label>
+                        <input type="email" id="email" value="{{ user.email|lower }}" disabled style="background-color: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-edit"></i> Edit Event Booking</h2>
+            <form id="editForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_event">
+                <input type="hidden" name="booking_id" id="edit_booking_id">
+                
+                <div class="form-group">
+                    <label for="edit_event_name">Event Name:</label>
+                    <input type="text" id="edit_event_name" name="event_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_event_date">Event Date:</label>
+                    <input type="date" id="edit_event_date" name="event_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_event_time">Event Time:</label>
+                    <input type="time" id="edit_event_time" name="event_time" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_event_location">Event Location:</label>
+                    <input type="text" id="edit_event_location" name="event_location" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_event_description">Event Description:</label>
+                    <textarea id="edit_event_description" name="event_description" rows="3" required></textarea>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Event
+                    </button>
+                    <button type="button" class="btn" onclick="closeModal()" style="background: #6c757d; color: white; margin-left: 10px;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close" onclick="closeReviewModal()">&times;</span>
+            <h2><i class="fas fa-star" style="color: #FFD700;"></i> Write a Review</h2>
+            <form method="post" action="" id="reviewForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <div class="rating-input">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comment">Your Review:</label>
+                    <textarea id="comment" name="comment" rows="5" placeholder="Share your experience with this event..." required></textarea>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-review">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
+                    <button type="button" class="btn" onclick="closeReviewModal()" style="background: #6c757d; color: white; margin-left: 10px;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Event Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2><i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i> Confirm Delete</h2>
+            <p>Are you sure you want to delete this event booking? This action cannot be undone.</p>
+            <form id="deleteForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_event">
+                <input type="hidden" name="booking_id" id="delete_booking_id">
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-delete">
+                        <i class="fas fa-trash"></i> Yes, Delete
+                    </button>
+                    <button type="button" class="btn" onclick="closeDeleteModal()" style="background: #6c757d; color: white; margin-left: 10px;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden logout form -->
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+
+    <script src="{% static 'js/profile.js' %}"></script>
+    <script>
+        // Set event data from Django template
+        setEventData({
+            {% for booking in bookings %}
+                {{ booking.id }}: {
+                    name: "{{ booking.event_name|escapejs }}",
+                    date: "{{ booking.event_date|date:'Y-m-d' }}",
+                    time: "{{ booking.event_time|time:'H:i' }}",
+                    location: "{{ booking.event_location|escapejs }}",
+                    description: "{{ booking.event_description|escapejs }}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        });
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>
