@@ -29,7 +29,7 @@
             <a href="#gallery">gallery</a>
             <a href="#price">price</a>
             <a href="#review">review</a>
-            <a href="#contact">contact</a>
+            <a href="#contact">event</a>
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
                     <a href="{% url 'admin_dashboard' %}">admin</a>
@@ -460,7 +460,7 @@
 
     <section class="contact" id="contact">
 
-        <h1 class="heading"><span>contact</span> us </h1>
+        <h1 class="heading"><span>Create</span> Event </h1>
 
         <form action="{% url 'home' %}" method="POST">
             {% csrf_token %}
@@ -539,10 +539,10 @@
                 <h3>contact info</h3>
 
 
-                <a href="#"> <i class="fas fa-phone"></i> +8801645680280 </a>
-                <a href="#"> <i class="fas fa-phone"></i> +8801798153056 </a>
-                <a href="#"> <i class="fas fa-envelope"></i> mehdedihasanpolashat@gmail.com </a>
-                <a href="#"> <i class="fas fa-envelope"></i> imzatj@gmail.com </a>
+                <a href="#"> <i class="fas fa-phone"></i> +8801632057766 </a>
+                <a href="#"> <i class="fas fa-phone"></i> +8801550684554 </a>
+                <a href="#"> <i class="fas fa-envelope"></i> econ15-5479@diu.edu.bd </a>
+                <a href="#"> <i class="fas fa-envelope"></i> imtiaz.h.econ.b@gmail.com </a>
                 <a href="#"> <i class="fa-solid fa-location-dot"></i> DIU, Bangladesh - 1350 </a>
 
 
@@ -553,10 +553,10 @@
                 <h3>follow us</h3>
 
 
-                <a href="#"> <i class="fa-brands fa-facebook"></i> facebook </a>
-                <a href="#"> <i class="fa-brands fa-square-x-twitter"></i>twitter </a>
-                <a href="#"> <i class="fa-brands fa-square-instagram"></i> instagram </a>
-                <a href="#"> <i class="fa-brands fa-linkedin"></i> linkedin </a>
+                <a href="https://www.facebook.com/ih.econ"> <i class="fa-brands fa-facebook"></i> facebook </a>
+                <a href="https://x.com/ih__econ"> <i class="fa-brands fa-square-x-twitter"></i>twitter </a>
+                <a href="https://www.instagram.com/ih__econ"> <i class="fa-brands fa-square-instagram"></i> instagram </a>
+                <a href="https://www.linkedin.com/in/ih-econ"> <i class="fa-brands fa-linkedin"></i> linkedin </a>
 
 
 

@@ -248,10 +248,10 @@
                                         <td class="actions-info">
                                             {% if booking.status == 'pending' %}
                                                 <div class="action-buttons">
-                                                    <button class="btn btn-approve" onclick="updateStatus({{ booking.id }}, 'approve')">
+                                                    <button type="button" class="btn btn-approve" onclick="updateStatus({{ booking.id }}, 'approve')">
                                                         <i class="fas fa-check"></i> Approve
                                                     </button>
-                                                    <button class="btn btn-reject" onclick="updateStatus({{ booking.id }}, 'reject')">
+                                                    <button type="button" class="btn btn-reject" onclick="updateStatus({{ booking.id }}, 'reject')">
                                                         <i class="fas fa-times"></i> Reject
                                                     </button>
                                                 </div>
